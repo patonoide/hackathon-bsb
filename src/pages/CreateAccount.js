@@ -1,12 +1,35 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, {useContext, useState} from 'react'
+import {Link, useHistory} from 'react-router-dom'
 
 import ImageLight from '../assets/img/create-account-office.jpeg'
 import ImageDark from '../assets/img/create-account-office-dark.jpeg'
 import { GithubIcon, TwitterIcon } from '../icons'
 import { Input, Label, Button } from '@windmill/react-ui'
+import UserRepository, {createUser} from "../repository/user_repository";
+import {AuthContext} from "../provider";
+
+
+
 
 function Login() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [cpf, setCpf] = useState('')
+  const [error, setError] = useState('')
+  const history = useHistory()
+
+
+  async function onButtonClick() {
+    const result = await createUser(email, password, cpf)
+    if(result !== "success") {
+      setError(result)
+    }else{
+
+      history.push('/login')
+    }
+
+  }
+
   return (
     <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
       <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
@@ -30,40 +53,31 @@ function Login() {
               <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">
                 Create account
               </h1>
+
+              <h2 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">
+                {error}
+              </h2>
               <Label>
                 <span>Email</span>
-                <Input className="mt-1" type="email" placeholder="john@doe.com" />
+                <Input className="mt-1" type="email" placeholder="john@doe.com" onChange={(e)=>setEmail(e.target.value)}/>
+              </Label>
+              <Label className="mt-4">
+                <span>CPF</span>
+                <Input className="mt-1" type="email" placeholder="000.000.000-00" onChange={(e)=>setCpf(e.target.value)} />
               </Label>
               <Label className="mt-4">
                 <span>Password</span>
-                <Input className="mt-1" placeholder="***************" type="password" />
-              </Label>
-              <Label className="mt-4">
-                <span>Confirm password</span>
-                <Input className="mt-1" placeholder="***************" type="password" />
+                <Input className="mt-1" placeholder="***************" type="password" onChange={(e)=>setPassword(e.target.value)} />
               </Label>
 
-              <Label className="mt-6" check>
-                <Input type="checkbox" />
-                <span className="ml-2">
-                  I agree to the <span className="underline">privacy policy</span>
-                </span>
-              </Label>
 
-              <Button tag={Link} to="/login" block className="mt-4">
+              <Button tag={Link} block className="mt-4" onClick={()=>onButtonClick()}>
                 Create account
               </Button>
 
               <hr className="my-8" />
 
-              <Button block layout="outline">
-                <GithubIcon className="w-4 h-4 mr-2" aria-hidden="true" />
-                Github
-              </Button>
-              <Button block className="mt-4" layout="outline">
-                <TwitterIcon className="w-4 h-4 mr-2" aria-hidden="true" />
-                Twitter
-              </Button>
+
 
               <p className="mt-4">
                 <Link

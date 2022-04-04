@@ -11,6 +11,8 @@ import {
   OutlineLogoutIcon,
 } from '../icons'
 import { Avatar, Badge, Input, Dropdown, DropdownItem, WindmillContext } from '@windmill/react-ui'
+import Auth from "../provider";
+import {useHistory} from "react-router-dom";
 
 function Header() {
   const { mode, toggleMode } = useContext(WindmillContext)
@@ -18,6 +20,8 @@ function Header() {
 
   const [isNotificationsMenuOpen, setIsNotificationsMenuOpen] = useState(false)
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
+  const auth = useContext(Auth)
+  const history = useHistory()
 
   function handleNotificationsClick() {
     setIsNotificationsMenuOpen(!isNotificationsMenuOpen)
@@ -25,6 +29,11 @@ function Header() {
 
   function handleProfileClick() {
     setIsProfileMenuOpen(!isProfileMenuOpen)
+  }
+
+  function handleSignOut(){
+
+    history.push('/login')
   }
 
   return (
@@ -128,7 +137,7 @@ function Header() {
                 <OutlineCogIcon className="w-4 h-4 mr-3" aria-hidden="true" />
                 <span>Settings</span>
               </DropdownItem>
-              <DropdownItem onClick={() => alert('Log out!')}>
+              <DropdownItem onClick={() => handleSignOut() }>
                 <OutlineLogoutIcon className="w-4 h-4 mr-3" aria-hidden="true" />
                 <span>Log out</span>
               </DropdownItem>

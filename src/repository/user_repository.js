@@ -1,15 +1,27 @@
-import AuthInterface from "../firebase/auth/auth_interface";
-import FirestoreInterface from "../firebase/firestore/firestore_interface";
+import  {authCreateUser, authLoginUser} from "../firebase/auth/auth_interface";
+
 import User from "../models/user";
+import {createDocument, getDocument} from "../firebase/firestore/firestore_interface";
 
-export default class UserRepository {
 
-    async static createUser(email, password, cpf){
+
+     export async function createUser(email, password, cpf){
         try {
-            const auth_user = await AuthInterface.createUser(email, password)
-            const doc = User(email, cpf, 0)
-            await FirestoreInterface.createDocument(doc, id, 'users')
+            const id = await authCreateUser(email, password)
+            const doc = new User(email, cpf, 0)
+            await createDocument(doc, id, 'users')
             return 'success'
+        }catch (e) {
+            return e
+        }
+    }
+
+    export async function loginUser(email, password){
+        try {
+            const id = await authLoginUser(email, password)
+            let doc = new User('', '', '')
+            await getDocument(id, 'users', doc)
+            return doc
         }catch (e) {
             return e
         }
@@ -17,4 +29,3 @@ export default class UserRepository {
 
 
 
-}

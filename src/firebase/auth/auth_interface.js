@@ -4,8 +4,10 @@ import {
 } from "firebase/auth";
 import { auth } from "firebase_init";
 
-export default class AuthInterface {
-  async static createUser(email, password) {
+
+
+
+  export async function authCreateUser(email, password) {
     try {
       let credential = await createUserWithEmailAndPassword(
         auth,
@@ -18,7 +20,7 @@ export default class AuthInterface {
     }
   }
 
-  async static loginUser(email, password) {
+  export async function authLoginUser(email, password) {
     try {
       const credential = await signInWithEmailAndPassword(
         auth,
@@ -30,4 +32,3 @@ export default class AuthInterface {
       throw e.message;
     }
   }
-}

@@ -5,6 +5,16 @@ export default class User {
     this.points = points;
   }
 
+  fromJson(obj){
+    this.email = obj.email
+    this.cpf = obj.cpf
+    this.points = obj.points
+  }
+
+  static fromJson(obj){
+    return new User(obj)
+  }
+
   toJson() {
     return { email: this.email, cpf: this.cpf, points: this.points };
   }

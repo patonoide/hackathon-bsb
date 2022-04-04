@@ -11,4 +11,4 @@ const auth = getAuth();
 const db = getFirestore(app);
 
 export { auth, db };
-export default firebase;
+
